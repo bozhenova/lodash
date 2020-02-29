@@ -1,4 +1,23 @@
 const _ = {
+  chunk(array, size) {
+    if (!size) {
+      size = 1;
+    }
+    const newArr = [];
+    for (let i = 0; i < array.length; i += size) {
+      newArr.push(array.slice(i, i + size));
+    }
+    return newArr;
+  },
+  compact(array) {
+    const newArr = array.filter(elem => elem);
+    return newArr;
+  },
+  concat(array, values) {
+    const newArr = array.slice();
+    values.map(value => Array.isArray(value) ? value.map(value => newArr.push(value)) : newArr.push(value));
+    return newArr;
+  },
   clamp(number, lower, upper) {
     const lowerClampedValue = Math.max(number, lower);
     const clampedValue = Math.min(lowerClampedValue, upper);
@@ -19,9 +38,9 @@ const _ = {
   },
   pad(string, length) {
     if (length > string.length) {
-      let startPaddingLength = Math.floor((length - string.length) / 2);
-      let endPaddingLength = length - string.length - startPaddingLength;
-      let paddedString = ' '.repeat(startPaddingLength).concat(string).concat(' '.repeat(endPaddingLength));
+      const startPaddingLength = Math.floor((length - string.length) / 2);
+      const endPaddingLength = length - string.length - startPaddingLength;
+      const paddedString = ' '.repeat(startPaddingLength).concat(string).concat(' '.repeat(endPaddingLength));
       return paddedString;
     } else {
       return string;
@@ -31,7 +50,7 @@ const _ = {
     return Object.keys(object).includes(key);
   },
   invert(object) {
-    let newObj = {};
+    const newObj = {};
     Object.keys(object).forEach(key => newObj[object[key]] = key);
     return newObj;
   },
@@ -52,22 +71,13 @@ const _ = {
     }
   },
   dropWhile(array, func) {
-    let dropNumber = array.findIndex((elem, ind) => { return !(func(elem, ind, array)) });
-    let newArr = this.drop(array, dropNumber);
-    return newArr;
-  },
-  chunk(array, size) {
-    if (!size) {
-      size = 1;
-    }
-    let newArr = [];
-    for (let i = 0; i < array.length; i += size) {
-      newArr.push(array.slice(i, i + size));
-    }
+    const dropNumber = array.findIndex((elem, ind) => { return !(func(elem, ind, array)) });
+    const newArr = this.drop(array, dropNumber);
     return newArr;
   }
+
+
 };
 
 
-// Do not write or modify code below this line.
 module.exports = _;
