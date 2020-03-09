@@ -1,3 +1,5 @@
+"use strict";
+
 const _ = {
   chunk(array, size = 1) {
     const newArr = [];
@@ -14,8 +16,9 @@ const _ = {
     values.map(value => Array.isArray(value) ? value.map(value => newArr.push(value)) : newArr.push(value));
     return newArr;
   },
-  difference(array, values) {
-    return newArr = array.filter(elem => values.indexOf(elem) === -1);
+  difference(array, ...values) {
+    let valuesArr = values.join(',');
+    return newArr = array.filter(elem => valuesArr.indexOf(elem) === -1);
   },
   differenceBy(array, values, func) {
     return newArr = array.filter(elem => (values.map(value => func(value))).indexOf(func(elem)) === -1);
@@ -43,12 +46,12 @@ const _ = {
     return newArr;
   },
   flattenDeep(array) {
-    let newArr = [];
+    const newArr = [];
     array.forEach(elem => Array.isArray(elem) ? newArr = newArr.concat(flattenDeep(elem)) : newArr.push(elem));
     return newArr;
   },
   flattenDepth(array, depth = 1) {
-    let newArr = [];
+    const newArr = [];
     if (depth < 0) {
       newArr.push(array)
       return newArr;
@@ -68,6 +71,25 @@ const _ = {
   },
   head(array) {
     return array[0];
+  },
+  indexOf(array, value, fromIndex = 0) {
+    return array.findIndex((element, index) => {
+      return element === value && index > fromIndex;
+    })
+  },
+  initial(array) {
+    return array.slice(0, array.length - 1);
+  },
+  intersection(array, ...values) {
+    let valuesArr = values.join(',');
+    return newArr = array.filter(element => {
+      return valuesArr.indexOf(element) !== -1;
+    });
+  },
+  intersectionBy(array, values, func) {
+    return newArr = array.filter(elem => {
+      return (values.map(value => func(value))).indexOf(func(elem)) !== -1;
+    })
   },
   inRange(number, start, end) {
     if (!end) {
