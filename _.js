@@ -23,7 +23,6 @@ const _ = {
   differenceBy(array, values, func) {
     return newArr = array.filter(elem => (values.map(value => func(value))).indexOf(func(elem)) === -1);
   },
-  differenceWith() { },
   drop(array, number = 1) {
     return array.slice(number);
   },
@@ -36,9 +35,6 @@ const _ = {
   dropWhile(array, func) {
     const dropNumber = array.findIndex((elem, ind) => !(func(elem, ind, array)));
     return newArr = array.slice(dropNumber);
-  },
-  fill(array, value, start = 0, end = array.length) {
-
   },
   flatten(array) {
     const newArr = [];
@@ -101,6 +97,14 @@ const _ = {
     }
     return number >= start && number < end;
   },
+  pull(array, ...values) {
+    return array.filter(elem => {
+      return values.indexOf(elem) === -1;
+    })
+  },
+  reverse(array) {
+    return array.map((elem, i) => array[array.length - 1 - i]);
+  },
   words(string) {
     return string.split(' ');
   },
@@ -114,6 +118,21 @@ const _ = {
       return string;
     }
   },
+  zip() {
+    let args = Array.from(arguments);
+    let newArr = [];
+    for (let i = 0; i < args.length - 1; i++) {
+      let arr = [];
+      args.forEach(elem => arr.push(elem[i]));
+      newArr.push(arr);
+    }
+    return newArr;
+  },
+  zipObject(identifiers, values) {
+    let obj = {};
+    identifiers.forEach((elem, i) => obj[elem] = values[i]);
+    return obj;
+  },
   has(object, key) {
     return Object.keys(object).includes(key);
   },
@@ -121,6 +140,11 @@ const _ = {
     const newObj = {};
     Object.keys(object).forEach(key => newObj[object[key]] = key);
     return newObj;
+  },
+  union() {
+    let arrays = [];
+    [...arguments].forEach(elem => elem.forEach(el => arrays.push(el)));
+    return Array.from(new Set(arrays));
   },
   findKey(object, func) {
     for (let key in object) {
