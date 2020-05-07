@@ -36,6 +36,15 @@ const _ = {
     const dropNumber = array.findIndex((elem, ind) => !(func(elem, ind, array)));
     return newArr = array.slice(dropNumber);
   },
+  findKey(object, func) {
+    for (let key in object) {
+      if (func(object[key])) {
+        return key;
+      } else {
+        return undefined;
+      }
+    }
+  },
   flatten(array) {
     const newArr = [];
     array.forEach(elem => Array.isArray(elem) ? elem.forEach(el => newArr.push(el)) : newArr.push(elem));
@@ -97,17 +106,6 @@ const _ = {
     }
     return number >= start && number < end;
   },
-  pull(array, ...values) {
-    return array.filter(elem => {
-      return values.indexOf(elem) === -1;
-    })
-  },
-  reverse(array) {
-    return array.map((elem, i) => array[array.length - 1 - i]);
-  },
-  words(string) {
-    return string.split(' ');
-  },
   pad(string, length) {
     if (length > string.length) {
       const startPaddingLength = Math.floor((length - string.length) / 2);
@@ -117,6 +115,44 @@ const _ = {
     } else {
       return string;
     }
+  },
+  pull(array, ...values) {
+    return array.filter(elem => {
+      return values.indexOf(elem) === -1;
+    })
+  },
+  take(array, n = 1) {
+    return array.slice(0, n);
+  },
+  takeRight(array, n = 1) {
+    return n && array.slice(-n) || [];
+  },
+  reverse(array) {
+    return array.map((elem, i) => array[array.length - 1 - i]);
+  },
+  unzip(array) {
+    let newArr = [];
+    for (let i = 0; i < array[0].length; i++) {
+      let arr = [];
+      array.forEach(elem => arr.push(elem[i]));
+      newArr.push(arr);
+    }
+    return newArr;
+  },
+  union() {
+    let arrays = [];
+    [...arguments].forEach(elem => elem.forEach(el => arrays.push(el)));
+    return Array.from(new Set(arrays));
+  },
+  uniq(array) {
+    return Array.from(new Set(array));
+  },
+  words(string) {
+    return string.split(' ');
+  },
+  without(array, ...values) {
+    let newArr = array.slice();
+    return newArr.filter(elem => values.indexOf(elem) === -1);
   },
   zip() {
     let args = Array.from(arguments);
@@ -141,23 +177,11 @@ const _ = {
     Object.keys(object).forEach(key => newObj[object[key]] = key);
     return newObj;
   },
-  union() {
-    let arrays = [];
-    [...arguments].forEach(elem => elem.forEach(el => arrays.push(el)));
-    return Array.from(new Set(arrays));
-  },
-  findKey(object, func) {
-    for (let key in object) {
-      if (func(object[key])) {
-        return key;
-      } else {
-        return undefined;
-      }
-    }
-  }
+
 
 
 };
 
 
 module.exports = _;
+
